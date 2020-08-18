@@ -52,6 +52,7 @@ function renderSinglePatron(patron){
     <h3>${patron.name}</h3><br>
     <h4>Cat Breed Sponsorships</h4>
     <ul id="patron-catbreed-sponsorships">
+
     </ul>
     <h4>Accessory Sponsorships</h4>
     <ul id="patron-accessory-sponsorships">
