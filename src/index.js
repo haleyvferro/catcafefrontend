@@ -1,12 +1,29 @@
 //code here
+let addToy = false;
+
 
 patronsUrl = "http://localhost:3000/patrons"
 catBreedSponsorshipsUrl = "http://localhost:3000/cat_breed_sponsorships"
 accsSponsorshipsUrl = "http://localhost:3000/accessory_sponsorships"
+catBreedsUrl = "http://localhost:3000/cat_breeds"
 
 
 function main(){
 fetchPatrons()
+}
+
+function addSponsButtonListener(){
+  const addBtn = document.querySelector("#new-toy-btn");
+  const toyFormContainer = document.querySelector(".container");
+  addBtn.addEventListener("click", () => {
+    // hide & seek with the form
+    addToy = !addToy;
+    if (addToy) {
+      toyFormContainer.style.display = "block";
+    } else {
+      toyFormContainer.style.display = "none";
+    }
+  });
 }
 
 
@@ -48,10 +65,35 @@ function renderSinglePatron(patron){
     const patronDeets = `
     <h3>${patron.name}</h3><br>
     <h4>Cat Breed Sponsorships</h4>
+    <div class="container">
+    <form class="add-cbs-form">
+    <h5>New Cat Sponsorship</h5>
+
+      Cat Breed: <select 
+        name="Cat Breeds"
+        id="cat-breeds-select"
+       >
+
+       </select><br>
+
+       Amount: $<input
+          type="integer"
+        />
+
+      <input
+        type="submit"
+        name="submit"
+        value="Add Sponsorship"
+        id="cbs-submit"
+      />
+    </form>
+  </div><br><br><br>
+  <h5>Existing Cat Sponsorships</h5>
     <ul id="patron-catbreed-sponsorships">
 
-    </ul>
+    </ul><br><br><br>
     <h4>Accessory Sponsorships</h4>
+    <div id="new-accessory-sponsorship"></div>
     <ul id="patron-accessory-sponsorships">
     </ul>
     `
@@ -59,7 +101,33 @@ function renderSinglePatron(patron){
 
     renderCatBreedSponsorships(patron)
     renderAccessorySponsorships(patron)
+    // addButtonListener()
+    fetchCatBreeds()
 }
+
+function fetchCatBreeds(){
+    fetch(`${catBreedsUrl}`)
+    .then(data => data.json())
+    .then(catBreeds => {renderCatBreedList(catBreeds)})
+}
+
+function renderCatBreedList(catBreeds){
+    const catBreedSelect = document.querySelector('#cat-breeds-select')
+    catBreeds.forEach(catBreed => {
+        const catBreedOption = document.createElement("option")
+        catBreedOption.innerText = catBreed.name
+        catBreedSelect.append(catBreedOption)
+    })
+}
+
+function newCBSClick(){
+    //add click listener to the cbs-submit button
+    //prevent default
+    //this scrapes the data from the form
+    //send to the backend
+    //then show on the front end
+}
+
 
 function renderCatBreedSponsorships(patron){
     const catBreedSponsorshipsList = document.querySelector('#patron-catbreed-sponsorships')
