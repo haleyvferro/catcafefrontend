@@ -23,13 +23,6 @@ function renderPatrons(patrons){
         patronsListContainer.append(patronLi)
         createPatronClickListener(patronLi)
     })
-    // patronsList.innerHTML = ``
-    //grab the list
-    //for each patron, 
-        //we want to ad an li (innerHTL)
-        //add id to each LI
-        //show that on the page
-
 }
 
 function createPatronClickListener(patronLi){
@@ -58,17 +51,36 @@ function renderSinglePatron(patron){
     <ul id="patron-accessory-sponsorships">
     </ul>
     `
-
     patronDetailDiv.innerHTML = patronDeets
-    
-    // patronNameHeader.innerText = patron.name
-    // const patronCatBreedHeader = document.createElement('h4')
 
-
-    //show patron name
-    //show patron catbreed sponsorships
-    //show patron accessory sponsorships
+    renderCatBreedSponsorships(patron)
 }
+
+
+
+function renderCatBreedSponsorships(patron){
+    const catBreedSponsorshipsList = document.querySelector('#patron-catbreed-sponsorships')
+    console.log(patron.id)
+    //fetch sponsorship information (backend - serializer)
+    //      when it comes back, we could filter through and find any that 
+    //      have the same patron_id as our patron here?
+    //      if so, we need to get cats here
+}
+
+
+
+//Patron
+//----
+//cat breed sponsos
+//  cat breed name - <textfield>amont</textfield> 
+//  <btton - patch> <btton delete>
+
+//accessories sponsos
+// accessory nae - <textfield>amont</textfield> 
+//  <btton - patch> <btton delete>
+
+//create new sponso for this patron
+//patron, dropdown - catbreed/accessory, aont - <sbit>
 
 
 
