@@ -9,6 +9,7 @@ const catBreedsUrl = "http://localhost:3000/cat_breeds"
 
 
 function main(){
+    let addCBS = false;
     fetchPatrons()
 //    fetchBreeds()
 //    fetchAccs()
