@@ -6,7 +6,7 @@ function renderSinglePatron(patron){
 
     <h5>Cat Sponsorships</h5>
     <br>
-        <button type="button" id="add-cbs-button">Add Cat Sponsorship</button>
+        <button type="button" id="add-cbs-button" class="btn btn-secondary">Add Cat Sponsorship</button>
         <br>
         <div id="new-cb-spons">
         </div>
@@ -17,7 +17,7 @@ function renderSinglePatron(patron){
     <br>
     <h5>Accessory Sponsorships</h5>
          <br>
-        <button type="button" id="add-accs-button">Add Accessory Sponsorship</button>
+        <button type="button" id="add-accs-button"class="btn btn-secondary">Add Accessory Sponsorship</button>
         <br>
         <div id="new-accs-spons">
         </div>

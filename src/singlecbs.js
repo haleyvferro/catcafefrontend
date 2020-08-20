@@ -12,7 +12,7 @@ function addnewCBSButton(patronId){
         <br>
         <label for="amount">Amount:</label>
         <input type="integer"></input>
-        <button type="submit" name="submit" id="cbs-submit">Add Sponsorship</button>
+        <button type="submit" name="submit" id="cbs-submit" class="btn btn-dark">Add Sponsorship</button>
         </form>
     `
     newCBSContainer.append(formHolder)
@@ -63,8 +63,8 @@ function addCBSSubmit(patronId){
             const breed = event.target.parentNode.children[1].value.split(' - ').pop()
             const catBreedLi = document.createElement('li')
             catBreedLi.innerHTML = `
-            <p>${breed}   Sponsorship Amount:  $<textarea id="cat_breed_amount">${amount}</textarea></p><br>
-            <p><button data-id="${cbSponso.id}" id="update-button-${cbSponso.id}">Update Sponsorship Amount</button><button data-id="${cbSponso.id}" id="delete-${cbSponso.id}">Delete Sponsorship</button>
+            ${breed}   Sponsorship Amount:  $<input id="cat_breed_amount" placeholder=${amount}></input>
+            <button type="button" class="btn btn-dark" data-id="${cbSponso.id}" id="update-button-${cbSponso.id}">Update Sponsorship Amount</button><button class="btn btn-dark" data-id="${cbSponso.id}" id="delete-${cbSponso.id}">Delete Sponsorship</button>
             `
             catBreedLi.id = `cat_breed_li-${cbSponso.id}`
             catBreedSponsorshipsList.append(catBreedLi)
@@ -89,9 +89,10 @@ function renderCatBreedSponsorships(patron){
     const catBreedSponsorshipsList = document.querySelector('#patron-catbreed-sponsorships')
     patron.cat_breed_sponsorships.forEach(cat_breed => {
         const catBreedLi = document.createElement('li')
+        catBreedLi.className = "list-group-item"
         catBreedLi.innerHTML = `
-        <p>${cat_breed.cat_breed}   Sponsorship Amount:  $<textarea id="cat_breed_amount">${cat_breed.amount}</textarea></p><br>
-        <p><button data-id="${cat_breed.cat_breed_sponsorship_id}" id="update-button-${cat_breed.cat_breed_sponsorship_id}">Update Sponsorship Amount</button><button data-id="${cat_breed.cat_breed_sponsorship_id}" id="delete-${cat_breed.cat_breed_sponsorship_id}">Delete Sponsorship</button>
+        <p>${cat_breed.cat_breed}   Sponsorship Amount:  $<input id="cat_breed_amount" placeholder=${cat_breed.amount}></input></p><br>
+        <p><button data-id="${cat_breed.cat_breed_sponsorship_id}" id="update-button-${cat_breed.cat_breed_sponsorship_id}" class="btn btn-dark">Update Sponsorship Amount</button> <button data-id="${cat_breed.cat_breed_sponsorship_id}" id="delete-${cat_breed.cat_breed_sponsorship_id}" class="btn btn-dark">Delete Sponsorship</button>
         `
         catBreedLi.id = `cat_breed_li-${cat_breed.cat_breed_sponsorship_id}`
         catBreedSponsorshipsList.append(catBreedLi)
