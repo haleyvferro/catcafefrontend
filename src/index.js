@@ -9,8 +9,6 @@ const accsUrl = "http://localhost:3000/accessories"
 
 
 function main(){
-    let addCBS = false;
-    let addAccs = false;
     fetchPatrons()
 //    fetchBreeds()
 //    fetchAccs()
