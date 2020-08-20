@@ -23,7 +23,7 @@ function renderSinglePatron(patron){
     `
     patronDetailDiv.innerHTML = patronDeets
 
-    addnewCBSButton()
+    addnewCBSButton(patron.id)
     renderCatBreedSponsorships(patron)
     renderAccessorySponsorships(patron)
     fetchCatBreeds()
@@ -33,7 +33,7 @@ function renderSinglePatron(patron){
 
 
 // NEW CAT SPONSORSHIP FORM
-function addnewCBSButton(){
+function addnewCBSButton(patronId){
 
     const newCBSContainer = document.querySelector("#new-cb-spons");
     const formHolder = document.createElement('div')
@@ -61,8 +61,10 @@ function addnewCBSButton(){
         formHolder.style.display = "none";
       }
     })
-    addCBSSubmit()
+    addCBSSubmit(patronId)
 }
+
+
 
 
 
@@ -73,17 +75,33 @@ function fetchCatBreeds(){
 }
 
 
-function addCBSSubmit(){
-    const cbsForm = document.querySelector('.add-cbs-form')
-    cbsForm.addEventListener('submit', (event) => {
-        event.preventDefault()
-        console.log(event)
-    })
 
+
+function addCBSSubmit(patronId){
+    const cbsForm = document.querySelector('#cbs-submit')
+    cbsForm.addEventListener('click', (event) => {
+        event.preventDefault()
+        const breedId = parseInt(event.target.parentNode.children[1].value)
+        const amount = parseInt(event.target.parentNode.children[4].value)
+
+        const reqObj = {
+            method: 'POST',
+            headers: {'Content-Type' : 'application/json',
+                        'Accept' : 'application/json'},
+            body: JSON.stringify({ amount: amount, patron_id: patronId, cat_breed_id: breedId })
+        }
+        
+        fetch(catBreedSponsorshipsUrl, reqObj)
+        .then(resp => resp.json())
+        .then(resp => {
+            console.log(resp)
+
+        })
+    })
+}
     //scrape the data from the form
     //send to the backend
     //then show on the front end
-}
 
 
 
@@ -106,14 +124,17 @@ function renderCatBreedSponsorships(patron){
 
 
 
+
 function renderCatBreedList(catBreeds){
     const catBreedSelect = document.querySelector('#cat-breeds-select')
     catBreeds.forEach(catBreed => {
         const catBreedOption = document.createElement("option")
-        catBreedOption.innerText = catBreed.name
+        catBreedOption.innerText = `${catBreed.id} - ${catBreed.name}`
         catBreedSelect.append(catBreedOption)
     })
 }
+
+
 
 
 
@@ -133,6 +154,7 @@ function catSponsAmtUpdate(catSponsorshipId){
     })
 }
 
+
 //   CAT SPONSORSHIP DELETE BUTTON
 function catSponsDelete(catSponsorshipId){
     const deleteButton = document.querySelector(`#delete-${catSponsorshipId}`)
@@ -146,6 +168,7 @@ function catSponsDelete(catSponsorshipId){
         thisLi.remove()
     })
 }
+
 
 
 
@@ -194,3 +217,4 @@ function accsSponsDelete(accsSponsorshipId){
         thisLi.remove()
     })
 }
+
