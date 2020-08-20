@@ -24,9 +24,9 @@ function renderSinglePatron(patron){
     patronDetailDiv.innerHTML = patronDeets
 
     addnewCBSButton(patron.id)
+    addnewAccsSButton(patron.id)
     renderCatBreedSponsorships(patron)
     renderAccessorySponsorships(patron)
-    fetchCatBreeds()
 }
 
 
@@ -49,7 +49,6 @@ function addnewCBSButton(patronId){
     `
     newCBSContainer.append(formHolder)
     addBtn = document.querySelector('#add-cbs-button')
-    let addCBS = true;
 
     addBtn.addEventListener("click", () => {
       // hide & seek with the form
@@ -61,6 +60,7 @@ function addnewCBSButton(patronId){
         formHolder.style.display = "none";
       }
     })
+    fetchCatBreeds()
     addCBSSubmit(patronId)
 }
 
@@ -93,10 +93,20 @@ function addCBSSubmit(patronId){
         
         fetch(catBreedSponsorshipsUrl, reqObj)
         .then(resp => resp.json())
-        .then(resp => {
-            console.log(resp)
-
+        .then(cbSponso => {
+            console.log(event.target)
+            const catBreedSponsorshipsList = document.querySelector('#patron-catbreed-sponsorships')
+            const breed = event.target.parentNode.children[1].value.split(' - ').pop()
+            const catBreedLi = document.createElement('li')
+            catBreedLi.innerHTML = `
+            <p>${breed}   Sponsorship Amount:  $<textarea id="cat_breed_amount">${amount}</textarea></p><br>
+            <p><button data-id="${cbSponso.id}" id="update-button-${cbSponso.id}">Update Sponsorship Amount</button><button data-id="${cbSponso.id}" id="delete-${cbSponso.id}">Delete Sponsorship</button>
+            `
+            catBreedLi.id = `cat_breed_li-${cbSponso.id}`
+            catBreedSponsorshipsList.append(catBreedLi)
         })
+        cbsForm.parentNode.remove()
+        addnewCBSButton(patronId)
     })
 }
     //scrape the data from the form
