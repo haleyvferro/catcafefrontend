@@ -12,7 +12,7 @@ function addnewAccsSButton(patronId){
         <br>
         <label for="amount">Amount:</label>
         <input type="integer"></input>
-        <button type="submit" name="submit" id="accs-submit">Add Sponsorship</button>
+        <button type="submit" name="submit" id="accs-submit" class="btn btn-dark">Add Sponsorship</button>
         </form>
     `
     newAccsContainer.append(formHolder)
@@ -62,8 +62,8 @@ function addAccsSubmit(patronId){
             const accs = event.target.parentNode.children[1].value.split(' - ').pop()
             const accsLi = document.createElement('li')
             accsLi.innerHTML = `
-            <p>${accs}   Sponsorship Amount:  $<textarea id="accs_amount">${amount}</textarea></p><br>
-            <p><button data-id="${accsSponso.id}" id="update-button-${accsSponso.id}">Update Sponsorship Amount</button><button data-id="${accsSponso.id}" id="delete-${accsSponso.id}">Delete Sponsorship</button>
+            <p>${accs}   Sponsorship Amount:  $<input id="accs_amount" placeholder=${amount}></input></p><br>
+            <p><button data-id="${accsSponso.id}" id="update-button-${accsSponso.id}" class="btn btn-dark">Update Sponsorship Amount</button><button data-id="${accsSponso.id}" id="delete-${accsSponso.id}" class="btn btn-dark">Delete Sponsorship</button>
             `
             accsLi.id = `accs_li-${accsSponso.id}`
             accsSponsorshipsList.append(accsLi)
@@ -89,9 +89,10 @@ function renderAccessorySponsorships(patron){
     const accessorySponsorshipsList = document.querySelector('#patron-accs-sponsorships')
     patron.accessory_sponsorships.forEach(accessory => {
         const accessoryLi = document.createElement('li')
+        accessoryLi.className = "list-group-item"
         accessoryLi.innerHTML = `
-        <p>${accessory.accessory}   Sponsorship Amount:  $<textarea id="accessory_amount">${accessory.amount}</textarea></p><br>
-        <p><button data-id="${accessory.accessory_sponsorship_id}" id="update-button-${accessory.accessory_sponsorship_id}">Update Sponsorship Amount</button><button data-id="${accessory.accessory_sponsorship_id}" id="delete-${accessory.accessory_sponsorship_id}">Delete Sponsorship</button>
+        ${accessory.accessory}   Sponsorship Amount:  $<input id="accessory_amount" placeholder=${accessory.amount}></input><br><br>
+        <button data-id="${accessory.accessory_sponsorship_id}" id="update-button-${accessory.accessory_sponsorship_id}" class="btn btn-dark">Update Sponsorship Amount</button> <button data-id="${accessory.accessory_sponsorship_id}" id="delete-${accessory.accessory_sponsorship_id}" class="btn btn-dark">Delete Sponsorship</button>
         `
         accessoryLi.id = `accs_li-${accessory.accessory_sponsorship_id}`
         accessorySponsorshipsList.append(accessoryLi)
