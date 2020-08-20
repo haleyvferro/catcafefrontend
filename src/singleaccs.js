@@ -57,7 +57,6 @@ function addAccsSubmit(patronId){
         fetch(accsSponsorshipsUrl, reqObj)
         .then(resp => resp.json())
         .then(accsSponso => {
-            console.log(event.target)
             const accsSponsorshipsList = document.querySelector('#patron-accs-sponsorships')
             const accs = event.target.parentNode.children[1].value.split(' - ').pop()
             const accsLi = document.createElement('li')
