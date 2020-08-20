@@ -13,6 +13,7 @@ function renderPatrons(patrons){
     patrons.forEach(patron => {
         const patronLi = document.createElement('li')
         patronLi.dataset.id = patron.id
+        patronLi.className = "list-group-item"
         patronLi.innerText = patron.name
         patronsListContainer.append(patronLi)
         createPatronClickListener(patronLi)
