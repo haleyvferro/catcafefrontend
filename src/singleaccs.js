@@ -20,6 +20,7 @@ function addnewAccsSButton(patronId){
 
     addBtn.addEventListener("click", () => {
       // hide & seek with the form
+      let addAccs = false;
       const form = document.querySelector('#add-accs-form')
       addAccs = !addAccs;
       if (addAccs) {

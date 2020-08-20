@@ -20,6 +20,7 @@ function addnewCBSButton(patronId){
 
     addBtn.addEventListener("click", () => {
       // hide & seek with the form
+      let addCBS = false;
       const form = document.querySelector('#add-cbs-form')
       addCBS = !addCBS;
       if (addCBS) {
