@@ -29,9 +29,9 @@ function renderSinglePatron(patron){
     `
     patronDetailDiv.innerHTML = patronDeets
 
-    addnewCBSButton(patron.id)
+    addnewCBSButton(patron)
     renderCatBreedSponsorships(patron)
-    addnewAccsSButton(patron.id)
+    addnewAccsSButton(patron)
     renderAccsSponsorships(patron)
 }
 

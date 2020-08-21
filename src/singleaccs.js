@@ -1,6 +1,7 @@
 
+
 // RENDER NEW ACCESORY SPONSORSHIP FORM
-function addnewAccsSButton(patronId){
+function addnewAccsSButton(patron){
 
     const newAccsContainer = document.querySelector("#new-accs-spons");
     const formHolder = document.createElement('div')
@@ -30,7 +31,7 @@ function addnewAccsSButton(patronId){
       }
     })
     fetchAccs()
-    addAccsSubmit(patronId)
+    addAccsSubmit(patron)
 }
 
 function fetchAccs(){
@@ -41,7 +42,7 @@ function fetchAccs(){
 
 
 // ADD BUTTON AND FORM TO ADD NEW ACCESSORY SPONSORSHIP
-function addAccsSubmit(patronId){
+function addAccsSubmit(patron){
     const accsForm = document.querySelector('#accs-submit')
     accsForm.addEventListener('click', (event) => {
         event.preventDefault()
@@ -52,7 +53,7 @@ function addAccsSubmit(patronId){
             method: 'POST',
             headers: {'Content-Type' : 'application/json',
                         'Accept' : 'application/json'},
-            body: JSON.stringify({ amount: amount, patron_id: patronId, accessory_id: accsId })
+            body: JSON.stringify({ amount: amount, patron_id: patron.id, accessory_id: accsId })
         }
         
         //ADD ELEMENT TO END
@@ -64,14 +65,16 @@ function addAccsSubmit(patronId){
             const accsLi = document.createElement('li')
             accsLi.className = "list-group-item"
             accsLi.innerHTML = `
-            <p>${accs}   Sponsorship Amount:  $<input id="cat_breed_amount" value=${amount}></input></p><br>
+            <p>${accs}   Sponsorship Amount:  $<input id="accs_amount" value=${amount}></input></p><br>
             <p><button data-id="${accsponso.id}" id="update-button-${accsponso.id}" class="btn btn-dark">Update Sponsorship Amount</button> <button data-id="${accsponso.id}" id="delete-${accsponso.id}" class="btn btn-dark">Delete Sponsorship</button>
             `
-            accsLi.id = `cat_breed_li-${accsponso.id}`
+            accsLi.id = `accs_li-${accsponso.id}`
             accsSponsorshipsList.append(accsLi)
+            accsSponsAmtUpdate(patron, accsponso.id)
+            accsSponsDelete(patron, accsponso.id)
         })
         accsForm.parentNode.remove()
-        addnewAccsSButton(patronId)
+        addnewAccsSButton(patron)
     })
 }
 
@@ -94,7 +97,7 @@ function renderAccsSponsorships(patron){
         const accsLi = document.createElement('li')
         accsLi.className = "list-group-item"
         accsLi.innerHTML = `
-        <p>${accs.name}   Sponsorship Amount:  $<input id="cat_breed_amount" value=${accs.amount}></input></p><br>
+        <p>${accs.accessory}   Sponsorship Amount:  $<input id="accs_amount" value=${accs.amount}></input></p><br>
         <p><button data-id="${accs.accessory_sponsorship_id}" id="update-button-${accs.accessory_sponsorship_id}" class="btn btn-dark">Update Sponsorship Amount</button> <button data-id="${accs.accessory_sponsorship_id}" id="delete-${accs.accessory_sponsorship_id}" class="btn btn-dark">Delete Sponsorship</button>
         `
         accsLi.id = `accs_li-${accs.accessory_sponsorship_id}`
@@ -126,9 +129,6 @@ function accsSponsAmtUpdate(patron, accsSponsorshipId){
             const amount = document.querySelector(`#accs_li-${accsSponsorshipId}`).childNodes[1].childNodes[1]
             amount.value = resp.amount
         })
-        const accsSponsorshipsList = document.querySelector('#patron-accs-sponsorships')
-        accsSponsorshipsList.innerText = "";
-        renderAccsSponsorships(patron)
     })
 }
 

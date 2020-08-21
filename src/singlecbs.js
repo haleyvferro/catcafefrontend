@@ -1,7 +1,7 @@
 
 
 // RENDER NEW CAT SPONSORSHIP FORM
-function addnewCBSButton(patronId){
+function addnewCBSButton(patron){
 
     const newCBSContainer = document.querySelector("#new-cb-spons");
     const formHolder = document.createElement('div')
@@ -31,7 +31,7 @@ function addnewCBSButton(patronId){
       }
     })
     fetchCatBreeds()
-    addCBSSubmit(patronId)
+    addCBSSubmit(patron)
 }
 
 function fetchCatBreeds(){
@@ -42,7 +42,7 @@ function fetchCatBreeds(){
 
 
 // ADD BUTTON AND FORM TO ADD NEW CAT SPONSORSHIP
-function addCBSSubmit(patronId){
+function addCBSSubmit(patron){
     const cbsForm = document.querySelector('#cbs-submit')
     cbsForm.addEventListener('click', (event) => {
         event.preventDefault()
@@ -53,7 +53,7 @@ function addCBSSubmit(patronId){
             method: 'POST',
             headers: {'Content-Type' : 'application/json',
                         'Accept' : 'application/json'},
-            body: JSON.stringify({ amount: amount, patron_id: patronId, cat_breed_id: breedId })
+            body: JSON.stringify({ amount: amount, patron_id: patron.id, cat_breed_id: breedId })
         }
         
         //ADD ELEMENT TO END
@@ -72,7 +72,7 @@ function addCBSSubmit(patronId){
             catBreedSponsorshipsList.append(catBreedLi)
         })
         cbsForm.parentNode.remove()
-        addnewCBSButton(patronId)
+        addnewCBSButton(patron)
     })
 }
 
@@ -127,9 +127,6 @@ function catSponsAmtUpdate(patron, catSponsorshipId){
             const amount = document.querySelector(`#cat_breed_li-${catSponsorshipId}`).childNodes[1].childNodes[1]
             amount.value = resp.amount
         })
-        const catBreedSponsorshipsList = document.querySelector('#patron-catbreed-sponsorships')
-        catBreedSponsorshipsList.innerText = "";
-        renderCatBreedSponsorships(patron)
     })
 }
 
