@@ -70,6 +70,8 @@ function addCBSSubmit(patron){
             `
             catBreedLi.id = `cat_breed_li-${cbSponso.id}`
             catBreedSponsorshipsList.append(catBreedLi)
+            catSponsAmtUpdate(patron, cbSponso.id)
+            catSponsDelete(patron, cbSponso.id)
         })
         cbsForm.parentNode.remove()
         addnewCBSButton(patron)
