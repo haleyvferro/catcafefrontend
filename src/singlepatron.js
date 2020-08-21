@@ -32,7 +32,7 @@ function renderSinglePatron(patron){
     addnewCBSButton(patron.id)
     renderCatBreedSponsorships(patron)
     addnewAccsSButton(patron.id)
-    renderAccessorySponsorships(patron)
+    renderAccsSponsorships(patron)
 }
 
 

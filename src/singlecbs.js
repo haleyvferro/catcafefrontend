@@ -1,12 +1,12 @@
 
 
-// NEW CAT SPONSORSHIP FORM
+// RENDER NEW CAT SPONSORSHIP FORM
 function addnewCBSButton(patronId){
 
     const newCBSContainer = document.querySelector("#new-cb-spons");
     const formHolder = document.createElement('div')
     formHolder.innerHTML = `
-        <form class="add-cbs-form">
+        <form i>
         <label for="breed">Cat Breed:</label>
         <select name="Cat Breeds" id="cat-breeds-select"></select>
         <br>
@@ -16,23 +16,23 @@ function addnewCBSButton(patronId){
         </form>
     `
     newCBSContainer.append(formHolder)
+    newCBSContainer.style.display = "none";
+    let addCBS = false;
     addBtn = document.querySelector('#add-cbs-button')
 
     addBtn.addEventListener("click", () => {
       // hide & seek with the form
-      let addCBS = false;
-      const form = document.querySelector('#add-cbs-form')
+      const form = document.querySelector('#new-cb-spons')
       addCBS = !addCBS;
       if (addCBS) {
-        formHolder.style.display = "block";
+        form.style.display = "block";
       } else {
-        formHolder.style.display = "none";
+        form.style.display = "none";
       }
     })
     fetchCatBreeds()
     addCBSSubmit(patronId)
 }
-
 
 function fetchCatBreeds(){
     fetch(`${catBreedsUrl}`)
@@ -41,6 +41,7 @@ function fetchCatBreeds(){
 }
 
 
+// ADD BUTTON AND FORM TO ADD NEW CAT SPONSORSHIP
 function addCBSSubmit(patronId){
     const cbsForm = document.querySelector('#cbs-submit')
     cbsForm.addEventListener('click', (event) => {
@@ -55,16 +56,17 @@ function addCBSSubmit(patronId){
             body: JSON.stringify({ amount: amount, patron_id: patronId, cat_breed_id: breedId })
         }
         
+        //ADD ELEMENT TO END
         fetch(catBreedSponsorshipsUrl, reqObj)
         .then(resp => resp.json())
         .then(cbSponso => {
-            console.log(event.target)
             const catBreedSponsorshipsList = document.querySelector('#patron-catbreed-sponsorships')
             const breed = event.target.parentNode.children[1].value.split(' - ').pop()
             const catBreedLi = document.createElement('li')
+            catBreedLi.className = "list-group-item"
             catBreedLi.innerHTML = `
-            ${breed}   Sponsorship Amount:  $<input id="cat_breed_amount" placeholder=${amount}></input>
-            <button type="button" class="btn btn-dark" data-id="${cbSponso.id}" id="update-button-${cbSponso.id}">Update Sponsorship Amount</button><button class="btn btn-dark" data-id="${cbSponso.id}" id="delete-${cbSponso.id}">Delete Sponsorship</button>
+            <p>${breed}   Sponsorship Amount:  $<input id="cat_breed_amount" value=${amount}></input></p><br>
+            <p><button data-id="${cbSponso.id}" id="update-button-${cbSponso.id}" class="btn btn-dark">Update Sponsorship Amount</button> <button data-id="${cbSponso.id}" id="delete-${cbSponso.id}" class="btn btn-dark">Delete Sponsorship</button>
             `
             catBreedLi.id = `cat_breed_li-${cbSponso.id}`
             catBreedSponsorshipsList.append(catBreedLi)
@@ -74,6 +76,8 @@ function addCBSSubmit(patronId){
     })
 }
 
+
+// CREATE LIST FOR NEW SPONS DROPDOWN
 function renderCatBreedList(catBreeds){
     const catBreedSelect = document.querySelector('#cat-breeds-select')
     catBreeds.forEach(catBreed => {
@@ -91,13 +95,13 @@ function renderCatBreedSponsorships(patron){
         const catBreedLi = document.createElement('li')
         catBreedLi.className = "list-group-item"
         catBreedLi.innerHTML = `
-        <p>${cat_breed.cat_breed}   Sponsorship Amount:  $<input id="cat_breed_amount" placeholder=${cat_breed.amount}></input></p><br>
+        <p>${cat_breed.cat_breed}   Sponsorship Amount:  $<input id="cat_breed_amount" value=${cat_breed.amount}></input></p><br>
         <p><button data-id="${cat_breed.cat_breed_sponsorship_id}" id="update-button-${cat_breed.cat_breed_sponsorship_id}" class="btn btn-dark">Update Sponsorship Amount</button> <button data-id="${cat_breed.cat_breed_sponsorship_id}" id="delete-${cat_breed.cat_breed_sponsorship_id}" class="btn btn-dark">Delete Sponsorship</button>
         `
         catBreedLi.id = `cat_breed_li-${cat_breed.cat_breed_sponsorship_id}`
         catBreedSponsorshipsList.append(catBreedLi)
-        catSponsAmtUpdate(`${cat_breed.cat_breed_sponsorship_id}`)
-        catSponsDelete(`${cat_breed.cat_breed_sponsorship_id}`)
+        catSponsAmtUpdate(patron, `${cat_breed.cat_breed_sponsorship_id}`)
+        catSponsDelete(patron, `${cat_breed.cat_breed_sponsorship_id}`)
     })
 }
 
@@ -105,11 +109,11 @@ function renderCatBreedSponsorships(patron){
 
 
 // CAT SPONSORSHIP AMOUNT UPDATE BUTTON
-function catSponsAmtUpdate(catSponsorshipId){
+function catSponsAmtUpdate(patron, catSponsorshipId){
     const updateButton = document.querySelector(`#update-button-${catSponsorshipId}`)
     updateButton.addEventListener('click', function(event){
         const id = event.target.dataset.id
-        const currentAmount = document.querySelector('#cat_breed_amount').value
+        const currentAmount = document.querySelector(`#cat_breed_li-${catSponsorshipId}`).childNodes[1].childNodes[1].value
         const reqObj =  {
             method: 'PATCH',
             headers: {'Content-Type' : 'application/json',
@@ -117,12 +121,21 @@ function catSponsAmtUpdate(catSponsorshipId){
             body: JSON.stringify({ amount: currentAmount })
         }
         fetch(`${catBreedSponsorshipsUrl}/${id}`, reqObj)
+        .then(resp => resp.json())
+        .then(resp => {
+            alert("amount updated");
+            const amount = document.querySelector(`#cat_breed_li-${catSponsorshipId}`).childNodes[1].childNodes[1]
+            amount.value = resp.amount
+        })
+        const catBreedSponsorshipsList = document.querySelector('#patron-catbreed-sponsorships')
+        catBreedSponsorshipsList.innerText = "";
+        renderCatBreedSponsorships(patron)
     })
 }
 
 
 //   CAT SPONSORSHIP DELETE BUTTON
-function catSponsDelete(catSponsorshipId){
+function catSponsDelete(patron, catSponsorshipId){
     const deleteButton = document.querySelector(`#delete-${catSponsorshipId}`)
     deleteButton.addEventListener('click', function(event){
         const id = event.target.dataset.id
